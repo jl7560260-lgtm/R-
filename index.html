@@ -3,37 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إلى أميرتي</title>
+    <title>عيد ميلاد سعيد يا أغلى الناس</title>
     <style>
         /* CSS - التصميم */
         :root {
-            --primary-color: #ff4d6d;
-            --bg-color: #0f0f0f;
+            --primary-color: #ff4d6d; /* لون الورد والقلوب */
+            --bg-color: #0f0f0f; /* خلفية سوداء فخمة */
+            --text-color: #f0f0f0;
         }
 
         body {
             margin: 0;
             background-color: var(--bg-color);
-            color: white;
+            color: var(--text-color);
             font-family: 'Cairo', sans-serif;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden; /* لمنع السكرول قبل الضغط */
         }
 
-        /* أنيميشن الخلفية (قلوب متساقطة) */
-        .heart-bg {
+        /* شاشة البداية (الوردة الكبيرة) */
+        #start-screen {
             position: fixed;
-            top: -10px;
-            color: rgba(255, 77, 109, 0.3);
-            font-size: 20px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 1s ease-out;
+        }
+
+        .big-rose {
+            font-size: 150px;
+            animation: roseFloat 2s ease-in-out infinite;
+            text-shadow: 0 0 30px var(--primary-color);
+        }
+
+        @keyframes roseFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        /* شاشة المحتوى الرئيسي (مخفية في البداية) */
+        #main-content {
+            display: none;
+            opacity: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            transition: opacity 1s ease-in;
+        }
+
+        /* أنيميشن مطر الورد والقلوب */
+        .flower-rain {
+            position: fixed;
+            color: rgba(255, 77, 109, 0.5);
+            font-size: 25px;
             animation: fall linear forwards;
             z-index: -1;
         }
 
         @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        h1 { font-size: 32px; color: var(--primary-color); margin-bottom: 5px; }
+        h2 { font-size: 20px; color: #ccc; margin-top: 0; font-weight: normal; }
+
+        /* العداد */
+        .timer-container {
+            background: rgba(255, 77, 109, 0.1);
+            padding: 15px;
+            border-radius: 15px;
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
