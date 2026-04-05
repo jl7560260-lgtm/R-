@@ -1,2 +1,1 @@
-# R-
-for my wife
+always in my mind 
