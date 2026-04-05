@@ -9,7 +9,7 @@
         :root { --primary: #ff4d6d; --bg: #000; }
         body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; scroll-behavior: smooth; }
 
-        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; border-bottom: 1px solid #111; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
 
         /* شاشة البداية */
         #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 2000; cursor: pointer; }
@@ -22,7 +22,7 @@
         .time-unit span { display: block; font-size: 26px; font-weight: 900; color: #fff; }
         .time-unit label { font-size: 11px; color: var(--primary); }
 
-        /* الصندوق */
+        /* الصندوق الإزاز */
         .glass-jar {
             width: 150px; height: 210px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px 15px 60px 60px;
@@ -30,9 +30,9 @@
         }
         .mini-paper { width: 25px; height: 15px; background: #fffbe6; border-radius: 2px; transform: rotate(var(--r)); opacity: 0.6; }
 
-        /* الورقة */
+        /* الورقة المطوية */
         #paper-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; width: 85%; max-width: 320px; }
-        .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; }
+        .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; border-radius: 2px; }
         @keyframes openNote { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
         .reply-btn { margin-top: 15px; background: var(--primary); color: white; border: none; padding: 8px 25px; border-radius: 20px; font-family: 'Cairo'; cursor: pointer; display: none; }
@@ -49,30 +49,28 @@
 
     <div id="main-content" style="display:none;">
         <section>
-            <h1 style="font-size: 40px; color: var(--primary); text-shadow: 0 0 20px rgba(255,77,109,0.3);">كل سنه وانت طيبه ي ملاكي ❤️</h1>
-            <div class="scroll-hint">انزلي شوفي ذكرياتنا 👇</div>
+            <h1 style="font-size: 35px; color: var(--primary);">كل سنه وانت طيبه ي ملاكي ❤️</h1>
+            <div class="scroll-hint">انزلي تحت 👇</div>
         </section>
 
         <section>
             <h2 style="color: #fff;">أول مرة اتكلمنا فيها ❤️</h2>
-            <div class="timer-container" id="timer1">
+            <div class="timer-container">
                 <div class="time-unit"><span id="d1">0</span><label>يوم</label></div>
                 <div class="time-unit"><span id="h1">0</span><label>ساعة</label></div>
                 <div class="time-unit"><span id="m1">0</span><label>دقيقة</label></div>
                 <div class="time-unit"><span id="s1">0</span><label>ثانية</label></div>
             </div>
-            <div class="scroll-hint">لسه فيه تاني.. 👇</div>
         </section>
 
         <section>
             <h2 style="color: var(--primary);">أول مرة أقولك بحبك ❤️</h2>
-            <div class="timer-container" id="timer2">
+            <div class="timer-container">
                 <div class="time-unit"><span id="d2">0</span><label>يوم</label></div>
                 <div class="time-unit"><span id="h2">0</span><label>ساعة</label></div>
                 <div class="time-unit"><span id="m2">0</span><label>دقيقة</label></div>
                 <div class="time-unit"><span id="s2">0</span><label>ثانية</label></div>
             </div>
-            <div class="scroll-hint">وصلنا للصندوق السحري 👇</div>
         </section>
 
         <section>
@@ -81,7 +79,7 @@
                 <div class="mini-paper" style="--r: 10deg"></div><div class="mini-paper" style="--r: -20deg"></div>
                 <div class="mini-paper" style="--r: 30deg"></div><div class="mini-paper" style="--r: 5deg"></div>
             </div>
-            <p style="margin-top: 20px; opacity: 0.7;">دوسي على الصندوق وشوفي رسايلي ليكي</p>
+            <p style="margin-top: 20px; opacity: 0.7;"> دوسي على الصندوق عشان تشوفي رسايلي يقمري</p>
         </section>
     </div>
 
@@ -97,14 +95,23 @@
 
     <script>
         const messages = [
+            // رسايل عربي (أكثر عدداً)
             { t: "عمري ماهبطل افكر فيكي يملاكي ❤️", q: false },
             { t: "بحبك ي ملاكي❤️", q: false },
             { t: "مفيش يوم مش مفكر فيكي ي قلبي ❤️", q: false },
-            { t: "You are the best thing that ever happened to me.", q: false },
+            { t: "انتي أجمل حاجة حصلت في دنيتي والله ❤️", q: false },
+            { t: " وجودك جنبي هو كل ما اتمناه  ❤️", q: false },
+            { t: "ضحكتك دي هي اللي بتنور حياتي ❤️", q: false },
             { t: "مين ملاكي؟", q: true },
             { t: "مين عمري؟", q: true },
             { t: "مين بموت فيه؟", q: true },
-            { t: "مين اكتر حد بحبه؟", q: true }
+            { t: "مين اكتر حد بحبه؟", q: true },
+            { t: "مين اتمنالو الرضا يرضا؟", q: true },
+            { t: "مين عاوزه مايزعلش عشان لو زعل بتقهر عليه؟", q: true },
+            // رسايل إنجليزي (عدد أقل)
+            { t: "You are my forever and always.", q: false },
+            { t: "My heart belongs to you only.", q: false },
+            { t: "I'm so lucky to have you in my life.", q: false }
         ];
 
         function startStory() {
@@ -124,7 +131,7 @@
 
         function handleReply(e) {
             e.stopPropagation();
-            document.getElementById('text').innerText = "صح يا روحي.. أنتي كل دنيتي ❤️";
+            document.getElementById('text').innerText = "صح يا ملاكي..أنت كل حياتي ❤️";
             document.getElementById('replyBtn').style.display = 'none';
             document.getElementById('close-msg').style.display = 'block';
             document.getElementById('note-heart').innerText = "💖";
