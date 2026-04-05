@@ -3,67 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عيد ميلاد سعيد يا أحلي ملاك في الدنيا 
-                       بحبك.        </title>
+    <title>عيد ميلاد سعيد</title>
     <style>
         :root {
             --primary-color: #ff4d6d;
             --bg-color: #0f0f0f;
-            --text-color: #f0f0f0;
         }
 
         body {
             margin: 0;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: white;
             font-family: 'Cairo', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* شاشة البداية (الوردة الكبيرة) */
+        /* شاشة البداية */
         #start-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color);
+            background: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             cursor: pointer;
-            transition: opacity 1s ease-out;
         }
 
         .big-rose {
-            font-size: 150px;
-            animation: roseFloat 2s ease-in-out infinite;
-            text-shadow: 0 0 30px var(--primary-color);
+            font-size: 120px;
+            animation: pulse 1.5s infinite;
         }
 
-        @keyframes roseFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.1); }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        /* شاشة المحتوى الرئيسي */
+        /* العناصر المخفية في البداية */
+        .step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+            margin-bottom: 30px;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         #main-content {
             display: none;
-            opacity: 0;
             text-align: center;
-            width: 100%;
-            max-width: 600px;
             padding: 20px;
-            transition: opacity 1s ease-in;
+            width: 100%;
         }
 
         .flower-rain {
             position: fixed;
-            color: rgba(255, 77, 109, 0.5);
-            font-size: 25px;
-            animation: fall linear forwards;
+            color: rgba(255, 77, 109, 0.4);
+            font-size: 20px;
+            animation: fall 4s linear forwards;
             z-index: -1;
         }
 
@@ -71,90 +77,44 @@
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        h1 { font-size: 32px; color: var(--primary-color); margin-bottom: 5px; }
-        h2 { font-size: 20px; color: #ccc; margin-top: 0; font-weight: normal; }
-
-        /* العداد */
-        .timer-container {
-            background: rgba(255, 77, 109, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 77, 109, 0.3);
-        }
-
+        /* تنسيق العداد */
         .timer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
         }
 
         .time-box span {
             display: block;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
             color: var(--primary-color);
-        }
-
-        /* مساحة التاريخ والكلام */
-        .special-date {
-            font-size: 18px;
-            color: #888;
-            border-bottom: 1px dashed #444;
-            padding-bottom: 10px;
-            margin: 15px 0;
-        }
-
-        .personal-msg {
-            font-size: 17px;
-            line-height: 1.6;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        /* معرض الصور */
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin: 30px 0;
+            font-weight: bold;
         }
 
         .photo-gallery img {
-            width: 100%;
+            width: 120px;
             height: 120px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #333;
-        }
-
-        .final-msg {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-top: 40px;
-            animation: heartBeat 1.5s infinite;
-        }
-
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            margin: 5px;
         }
     </style>
 </head>
 <body>
 
-    <div id="start-screen" onclick="startExperience()">
+    <div id="start-screen" onclick="startStory()">
         <div class="big-rose">🌹</div>
     </div>
 
     <div id="main-content">
-        <h1>كل ثانية وإنتي معايا</h1>
-        <h2>إحنا مع بعض من يوم 10/9/2025</h2>
-
-        <div class="timer-container">
+        <h1 class="step" id="step1">كل ثانية وإنتي معايا ❤️</h1>
+        
+        <div class="step" id="step2">
+            <p>إحنا مع بعض من 10/9/2025</p>
             <div class="timer-grid">
                 <div class="time-box"><span id="days">0</span>يوم</div>
                 <div class="time-box"><span id="hours">0</span>ساعة</div>
@@ -163,58 +123,53 @@
             </div>
         </div>
 
-        <div class="special-date">
-            📅 تاريخ النهاردة: عيد ميلادك هو أحلى يوم في السنة
+        <div class="step" id="step3">
+            <div class="photo-gallery">
+                <img src="https://via.placeholder.com/150">
+                <img src="https://via.placeholder.com/150">
+            </div>
         </div>
 
-        <div class="personal-msg">
-            حبيبتي.. كل سنة وإنتي منورة حياتي، إنتي الوردة اللي بجد في عمري. <br> كتبت لك الكود ده عشان أقولك إني بحبك جداً.
-        </div>
-
-        <div class="photo-gallery">
-            <img src="https://via.placeholder.com/150x150/ff4d6d/ffffff?text=Photo+1">
-            <img src="https://via.placeholder.com/150x150/ff4d6d/ffffff?text=Photo+2">
-            <img src="https://via.placeholder.com/150x150/ff4d6d/ffffff?text=Photo+3">
-        </div>
-
-        <div class="final-msg">❤️ كل سنة وإنتي طيبة.. وكل سنة وأنا معاكي ❤️</div>
+        <h2 class="step" id="step4" style="color: var(--primary-color);">
+            كل سنة وإنتي طيبة.. وكل سنة وأنا معاكي
+        </h2>
     </div>
 
     <script>
-        function startExperience() {
-            document.getElementById('start-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('start-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                setTimeout(() => { document.getElementById('main-content').style.opacity = '1'; }, 100);
-                document.body.style.overflow = 'auto';
-                startFlowerRain();
-            }, 1000);
+        function startStory() {
+            // إخفاء الوردة
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            
+            startFlowerRain();
+
+            // إظهار الخطوات بتوقيتات مختلفة
+            setTimeout(() => { document.getElementById('step1').classList.add('show'); }, 500);
+            setTimeout(() => { document.getElementById('step2').classList.add('show'); }, 2500);
+            setTimeout(() => { document.getElementById('step3').classList.add('show'); }, 4500);
+            setTimeout(() => { document.getElementById('step4').classList.add('show'); }, 6500);
         }
 
-        // تم تغيير التاريخ لـ 10 سبتمبر 2025
+        // كود العداد
         const startDate = new Date("September 10, 2025 00:00:00").getTime();
-
         setInterval(function() {
             const now = new Date().getTime();
             const diff = now - startDate;
-
             document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
             document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }, 1000);
 
-        const items = ['🌹', '❤️', '🌺', '💖'];
+        // كود مطر الورد
         function startFlowerRain() {
-            setInterval(function() {
-                const item = document.createElement('div');
-                item.classList.add('flower-rain');
-                item.innerHTML = items[Math.floor(Math.random() * items.length)];
-                item.style.left = Math.random() * 100 + 'vw';
-                item.style.animationDuration = Math.random() * 3 + 2 + 's';
-                document.body.appendChild(item);
-                setTimeout(() => { item.remove(); }, 5000);
+            setInterval(() => {
+                const f = document.createElement('div');
+                f.classList.add('flower-rain');
+                f.innerHTML = '🌹';
+                f.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(f);
+                setTimeout(() => f.remove(), 4000);
             }, 300);
         }
     </script>
