@@ -1,13 +1,163 @@
-<body style="background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; margin: 0;">
-    
-    <div style="font-size: 50px; color: #ff4d4d; animation: beat 0.8s infinite alternate;">❤️</div>
-    
-    <h1 style="margin-top: 20px;">Welcome to My Project</h1>
-    <p style="color: #888;">This is a special place for special people.</p>
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى أميرتي</title>
     <style>
-        @keyframes beat {
-            to { transform: scale(1.2); }
+        /* CSS - التصميم */
+        :root {
+            --primary-color: #ff4d6d;
+            --bg-color: #0f0f0f;
         }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* أنيميشن الخلفية (قلوب متساقطة) */
+        .heart-bg {
+            position: fixed;
+            top: -10px;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 20px;
+            animation: fall linear forwards;
+            z-index: -1;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* العداد (Timer) */
+        .timer-container {
+            margin-top: 50px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 25px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* معرض الصور (Slider بسيط) */
+        .photo-frame {
+            margin: 40px 0;
+            width: 250px;
+            height: 250px;
+            border: 5px solid white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* القلب الكبير */
+        .big-heart {
+            font-size: 80px;
+            color: var(--primary-color);
+            animation: pulse 1s infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px var(--primary-color); }
+            50% { transform: scale(1.2); text-shadow: 0 0 30px var(--primary-color); }
+            100% { transform: scale(1); text-shadow: 0 0 10px var(--primary-color); }
+        }
+
+        h2 { margin: 10px 0; font-size: 22px; text-align: center; padding: 0 20px; }
     </style>
+</head>
+<body>
+
+    <div class="timer-container">
+        <h2>بقالنا مع بعض</h2>
+        <div class="timer-grid">
+            <div class="time-box"><span id="days">0</span>يوم</div>
+            <div class="time-box"><span id="hours">0</span>ساعة</div>
+            <div class="time-box"><span id="minutes">0</span>دقيقة</div>
+            <div class="time-box"><span id="seconds">0</span>ثانية</div>
+        </div>
+    </div>
+
+    <div class="photo-frame">
+        <img src="https://via.placeholder.com/250x250/ff4d6d/ffffff?text=Your+Photo" id="slideshow">
+    </div>
+
+    <div class="big-heart">❤️</div>
+    
+    <h2>أنتي أجمل حاجة حصلت في دنيتي</h2>
+
+    <script>
+        // 1. العداد (غير التاريخ ده لتاريخ جوازكم أو أول مقابلة)
+        const startDate = new Date("September 10, 2025 00:00:00").getTime();
+
+        setInterval(function() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }, 1000);
+
+        // 2. أنيميشن القلوب المتساقطة
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // 3. تبديل الصور (لو حطيت كذا صورة)
+        const images = [
+            "https://via.placeholder.com/250x250/ff4d6d/ffffff?text=Photo+1",
+            "https://via.placeholder.com/250x250/000000/ffffff?text=Photo+2"
+        ];
+        let i = 0;
+        setInterval(() => {
+            i = (i + 1) % images.length;
+            document.getElementById("slideshow").src = images[i];
+        }, 3000);
+    </script>
 </body>
+</html>
