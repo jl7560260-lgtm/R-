@@ -1,164 +1,110 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صندوق الرسائل الغالية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <title>Memory Jar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Reenie+Beanie&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --bg-color: #000000;
+        :root { --primary: #ff4d6d; --bg: #000000; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; }
+
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+        /* ستايل الصندوق الزجاجي */
+        .jar {
+            width: 150px; height: 200px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px 10px 50px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative; cursor: pointer;
+            transition: 0.3s;
+        }
+        .jar:hover { transform: scale(1.05); border-color: var(--primary); }
+        .jar::after { content: '🎁'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; }
+
+        /* تأثير الورقة اللي بتفتح (مثل الصور) */
+        #paper-container {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 3000;
         }
 
-        body {
-            margin: 0;
-            background-color: var(--bg-color);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* شاشة البداية */
-        #start-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            justify-content: center; align-items: center;
-            z-index: 2000; cursor: pointer;
-        }
-
-        .big-rose { font-size: 100px; animation: pulse 2s infinite; }
-
-        section {
-            min-height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; position: relative;
-        }
-
-        /* ستايل العداد */
-        .counter-val { font-size: 70px; font-weight: 900; color: #fff; line-height: 1; }
-        .counter-label { color: var(--primary-color); font-size: 18px; margin-bottom: 20px; }
-
-        /* الصندوق الزجاجي */
-        .jar-container {
+        .folded-paper {
+            width: 280px; min-height: 150px;
+            background: #fffbe6; color: #333;
+            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             position: relative;
-            width: 200px; height: 250px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px 20px 80px 80px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform 0.3s;
+            transform-origin: left;
+            animation: openPaper 1s forwards; /* أنيميشن الفتح */
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 30px; line-height: 1.2;
         }
 
-        .jar-container:active { transform: scale(0.95); }
-
-        .jar-lid {
-            position: absolute; top: -10px;
-            width: 120px; height: 20px;
-            background: #444; border-radius: 5px;
+        @keyframes openPaper {
+            0% { transform: scaleX(0); opacity: 0; }
+            100% { transform: scaleX(1); opacity: 1; }
         }
 
-        /* ورقة الرسالة */
-        #message-paper {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px; padding: 30px;
-            background: #fffbe6; /* لون ورق النوتس */
-            color: #333;
-            font-family: 'Reenie Beanie', cursive; /* خط يشبه اليد */
-            font-size: 28px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-radius: 2px;
-            z-index: 3000;
-            text-align: center;
-        }
+        .heart-icon { color: var(--primary); font-size: 40px; margin-bottom: 10px; opacity: 0; animation: fadeIn 0.5s 1s forwards; }
+        .message-text { opacity: 0; animation: fadeIn 0.8s 1.5s forwards; }
 
-        #overlay {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 2500;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .close-btn { margin-top: 15px; font-family: 'Cairo'; font-size: 14px; color: #888; cursor: pointer; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; }
+        
+        .close-hint { font-size: 14px; color: #888; margin-top: 20px; font-family: 'Cairo'; }
     </style>
 </head>
 <body>
 
-    <div id="start-screen" onclick="startStory()">
-        <div class="big-rose">🌹</div>
-    </div>
+    <section>
+        <h1 style="color: var(--primary);">Every second with you is a gift ❤️</h1>
+        <div id="days" style="font-size: 80px; font-weight: 900;">0</div>
+        <p>Days of Love</p>
+        <p style="margin-top: 100px;">Scroll down for your jar.. 👇</p>
+    </section>
 
-    <div id="main-content" style="display:none;">
-        <section>
-            <h1 style="color:var(--primary-color)">كل ثانية وإنتي معايا ❤️</h1>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                <div><span class="counter-val" id="days">0</span><div class="counter-label">يوم</div></div>
-                <div><span class="counter-val" id="hours">0</span><div class="counter-label">ساعة</div></div>
-            </div>
-            <p>انزلي تحت للصندوق.. 👇</p>
-        </section>
-
-        <section>
-            <h2>صندوق الرسائل الغالية 🍯</h2>
-            <p>دوسي على الصندوق عشان تشوفي كد ايه بحبك</p>
-            <div class="jar-container" onclick="showRandomMessage()">
-                <div class="jar-lid"></div>
-                <span style="font-size: 40px;">📜</span>
-            </div>
-        </section>
-
-        <section>
-            <h1 style="color:var(--primary-color); font-size: 40px;">كل سنة وإنتي معايا ❤️</h1>
-        </section>
-    </div>
+    <section>
+        <h2 style="margin-bottom: 40px;">Your Memory Jar 🍯</h2>
+        <div class="jar" onclick="popMessage()"></div>
+        <p style="margin-top: 20px; color: #666;">Tap the jar to open a note</p>
+    </section>
 
     <div id="overlay" onclick="closeMessage()"></div>
-    <div id="message-paper">
-        <div id="text-content"></div>
-        <div class="close-btn">(دوسي في أي حتة عشان تقفلي)</div>
+    <div id="paper-container" id="paper-anim">
+        <div class="folded-paper">
+            <div class="heart-icon">💜</div>
+            <div class="message-text" id="msg"></div>
+            <div class="close-hint">Tap anywhere to close</div>
+        </div>
     </div>
 
     <script>
         const messages = [
-            "صح القمر موجود بس مستحيل قمر مثل 'R' في الأرض كلها ❤️",
-            "انتي الوردة اللي بجد في عمري.. 🌹",
-            "كل ثانية بتعدي وإحنا مع بعض هي مكسب ليا..",
-            "لو جمعت ورق الدنيا مش هيكفي وصف حبي ليكي..",
-            "انتي أجمل صدفة حصلت في حياتي يوم 10/9/2025"
+            "Among 8 billion people, I was lucky enough to meet the most beautiful and good.",
+            "You have no idea how much I miss you right now and how badly I want to see and hug you.",
+            "You are the one I want to spend my life with. You are my forever love.",
+            "I will choose you over and over, without a pause, without a doubt, in a heartbeat.",
+            "Meeting you was like listening to a song for the first time and knowing it would be my favorite."
         ];
 
-        function startStory() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            document.body.style.overflowY = 'auto';
-        }
-
-        function showRandomMessage() {
+        function popMessage() {
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('text-content').innerText = randomMsg;
+            document.getElementById('msg').innerText = randomMsg;
             document.getElementById('overlay').style.display = 'block';
-            document.getElementById('message-paper').style.display = 'block';
+            document.getElementById('paper-container').style.display = 'block';
         }
 
         function closeMessage() {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('message-paper').style.display = 'none';
+            document.getElementById('paper-container').style.display = 'none';
         }
 
         // العداد
-        const startDate = new Date("September 10, 2025").getTime();
+        const start = new Date("September 10, 2025").getTime();
         setInterval(() => {
-            const diff = new Date().getTime() - startDate;
-            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const now = new Date().getTime();
+            document.getElementById("days").innerText = Math.floor((now - start) / (1000 * 60 * 60 * 24));
         }, 1000);
     </script>
 </body>
