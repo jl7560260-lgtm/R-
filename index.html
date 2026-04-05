@@ -3,128 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Memory Jar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <title>إلى ملاكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Reenie+Beanie&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff4d6d; --glass: rgba(255, 255, 255, 0.1); }
-        body { margin: 0; background: #000; color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; }
+        :root { --primary: #ff4d6d; --bg: #000; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; scroll-behavior: smooth; }
 
-        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; border-bottom: 1px solid #111; }
 
-        /* العداد الكامل */
-        .timer-container { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
-        .time-unit { background: rgba(255, 77, 109, 0.1); padding: 10px; border-radius: 12px; min-width: 65px; border: 1px solid rgba(255, 77, 109, 0.3); }
-        .time-unit span { display: block; font-size: 28px; font-weight: 900; color: #fff; }
+        /* شاشة البداية */
+        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 2000; cursor: pointer; }
+        .big-rose { font-size: 100px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* العدادات */
+        .timer-container { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .time-unit { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; min-width: 60px; border: 1px solid rgba(255, 77, 109, 0.2); }
+        .time-unit span { display: block; font-size: 26px; font-weight: 900; color: #fff; }
         .time-unit label { font-size: 11px; color: var(--primary); }
 
-        /* الصندوق الإزاز */
+        /* الصندوق */
         .glass-jar {
-            width: 160px; height: 220px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px 15px 60px 60px;
-            position: relative; cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-            display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 5px; padding: 10px;
+            width: 150px; height: 210px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px 15px 60px 60px;
+            position: relative; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 5px; padding: 10px;
         }
-        .glass-jar::before { content: ''; position: absolute; top: -15px; width: 90px; height: 15px; background: #333; border-radius: 5px; left: 50%; transform: translateX(-50%); }
         .mini-paper { width: 25px; height: 15px; background: #fffbe6; border-radius: 2px; transform: rotate(var(--r)); opacity: 0.6; }
 
-        /* الورقة المطوية */
-        #paper-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; width: 90%; max-width: 320px; }
-        .folded-paper {
-            background: #fffbe6; color: #333; padding: 40px 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9); transform-origin: left;
-            animation: openNote 0.6s ease-out forwards;
-            font-family: 'Reenie Beanie', cursive; font-size: 30px; position: relative; border-radius: 2px;
-        }
-        @keyframes openNote { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-        
-        .heart { color: #6a0dad; font-size: 40px; margin-bottom: 10px; }
-        
-        /* زرار الرد */
-        .reply-btn {
-            margin-top: 20px; background: var(--primary); color: white; border: none;
-            padding: 10px 30px; border-radius: 20px; font-family: 'Cairo'; cursor: pointer;
-            display: none; font-size: 16px;
-        }
+        /* الورقة */
+        #paper-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; width: 85%; max-width: 320px; }
+        .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; }
+        @keyframes openNote { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; }
+        .reply-btn { margin-top: 15px; background: var(--primary); color: white; border: none; padding: 8px 25px; border-radius: 20px; font-family: 'Cairo'; cursor: pointer; display: none; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2500; }
+        .scroll-hint { font-size: 14px; color: #555; margin-top: 30px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
     </style>
 </head>
 <body>
 
-    <section>
-        <h1 style="color: var(--primary); font-size: 24px;">كل ثانية وإنتي معايا ❤️</h1>
-        <div class="timer-container">
-            <div class="time-unit"><span id="d">0</span><label>يوم</label></div>
-            <div class="time-unit"><span id="h">0</span><label>ساعة</label></div>
-            <div class="time-unit"><span id="m">0</span><label>دقيقة</label></div>
-            <div class="time-unit"><span id="s">0</span><label>ثانية</label></div>
-        </div>
-        <p style="margin-top: 40px; opacity: 0.5;">انزلي للصندوق تحت 👇</p>
-    </section>
+    <div id="start-screen" onclick="startStory()">
+        <div class="big-rose">🌹</div>
+    </div>
 
-    <section>
-        <h2 style="margin-bottom: 30px;">Memory Jar 🍯</h2>
-        <div class="glass-jar" onclick="openJar()">
-            <div class="mini-paper" style="--r: 10deg"></div><div class="mini-paper" style="--r: -15deg"></div>
-            <div class="mini-paper" style="--r: 25deg"></div><div class="mini-paper" style="--r: -5deg"></div>
-            <div class="mini-paper" style="--r: 40deg"></div>
-        </div>
-    </section>
+    <div id="main-content" style="display:none;">
+        <section>
+            <h1 style="font-size: 40px; color: var(--primary); text-shadow: 0 0 20px rgba(255,77,109,0.3);">كل سنه وانت طيبه ي ملاكي ❤️</h1>
+            <div class="scroll-hint">انزلي شوفي ذكرياتنا 👇</div>
+        </section>
+
+        <section>
+            <h2 style="color: #fff;">أول مرة اتكلمنا فيها ❤️</h2>
+            <div class="timer-container" id="timer1">
+                <div class="time-unit"><span id="d1">0</span><label>يوم</label></div>
+                <div class="time-unit"><span id="h1">0</span><label>ساعة</label></div>
+                <div class="time-unit"><span id="m1">0</span><label>دقيقة</label></div>
+                <div class="time-unit"><span id="s1">0</span><label>ثانية</label></div>
+            </div>
+            <div class="scroll-hint">لسه فيه تاني.. 👇</div>
+        </section>
+
+        <section>
+            <h2 style="color: var(--primary);">أول مرة أقولك بحبك ❤️</h2>
+            <div class="timer-container" id="timer2">
+                <div class="time-unit"><span id="d2">0</span><label>يوم</label></div>
+                <div class="time-unit"><span id="h2">0</span><label>ساعة</label></div>
+                <div class="time-unit"><span id="m2">0</span><label>دقيقة</label></div>
+                <div class="time-unit"><span id="s2">0</span><label>ثانية</label></div>
+            </div>
+            <div class="scroll-hint">وصلنا للصندوق السحري 👇</div>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 30px;">Memory Jar 🍯</h2>
+            <div class="glass-jar" onclick="openJar()">
+                <div class="mini-paper" style="--r: 10deg"></div><div class="mini-paper" style="--r: -20deg"></div>
+                <div class="mini-paper" style="--r: 30deg"></div><div class="mini-paper" style="--r: 5deg"></div>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.7;">دوسي على الصندوق وشوفي رسايلي ليكي</p>
+        </section>
+    </div>
 
     <div id="overlay" onclick="closeNote()"></div>
     <div id="paper-container">
         <div class="folded-paper">
-            <div class="heart" id="note-heart">💜</div>
+            <div id="note-heart" style="color: #6a0dad; font-size: 35px;">💜</div>
             <div id="text"></div>
             <button class="reply-btn" id="replyBtn" onclick="handleReply(event)">أنا</button>
-            <p id="close-msg" style="font-family: 'Cairo'; font-size: 12px; color: #999; margin-top: 20px;">(دوسي في أي مكان للقفل)</p>
+            <p id="close-msg" style="font-family: 'Cairo'; font-size: 11px; color: #999; margin-top: 15px;">(دوسي في أي مكان للقفل)</p>
         </div>
     </div>
 
     <script>
         const messages = [
-            // رسائل عادية (عربي وإنجليزي)
             { t: "عمري ماهبطل افكر فيكي يملاكي ❤️", q: false },
             { t: "بحبك ي ملاكي❤️", q: false },
             { t: "مفيش يوم مش مفكر فيكي ي قلبي ❤️", q: false },
-            { t: "Among 8 billion people, I was lucky enough to meet you.", q: false },
-            { t: "Every day I love you more than yesterday.", q: false },
-            // أسئلة محتاجة رد
+            { t: "You are the best thing that ever happened to me.", q: false },
             { t: "مين ملاكي؟", q: true },
             { t: "مين عمري؟", q: true },
-            { t: "مين اكتر حد بحبه؟", q: true },
             { t: "مين بموت فيه؟", q: true },
-            { t: "مين اتمنالو الرضا يرضا؟", q: true },
-            { t: "مين عاوزه مايزعلش عشان لو زعل بتقهر عليه؟", q: true }
+            { t: "مين اكتر حد بحبه؟", q: true }
         ];
+
+        function startStory() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.body.style.overflowY = 'auto';
+        }
 
         function openJar() {
             const random = messages[Math.floor(Math.random() * messages.length)];
-            const textEl = document.getElementById('text');
-            const btn = document.getElementById('replyBtn');
-            const closeMsg = document.getElementById('close-msg');
-            
-            textEl.innerText = random.t;
+            document.getElementById('text').innerText = random.t;
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('paper-container').style.display = 'block';
-
-            if(random.q) {
-                btn.style.display = 'inline-block';
-                closeMsg.style.display = 'none';
-            } else {
-                btn.style.display = 'none';
-                closeMsg.style.display = 'block';
-            }
+            document.getElementById('replyBtn').style.display = random.q ? 'inline-block' : 'none';
+            document.getElementById('close-msg').style.display = random.q ? 'none' : 'block';
         }
 
         function handleReply(e) {
-            e.stopPropagation(); // عشان الورقة ماتقفلش لما تدوس على الزرار
-            const textEl = document.getElementById('text');
-            textEl.innerText = "صح يا روحي.. أنتي كل دنيتي ❤️";
+            e.stopPropagation();
+            document.getElementById('text').innerText = "صح يا روحي.. أنتي كل دنيتي ❤️";
             document.getElementById('replyBtn').style.display = 'none';
             document.getElementById('close-msg').style.display = 'block';
             document.getElementById('note-heart').innerText = "💖";
@@ -133,18 +133,22 @@
         function closeNote() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('paper-container').style.display = 'none';
-            document.getElementById('note-heart').innerText = "💜";
         }
 
-        // العداد
-        const start = new Date("September 10, 2025 00:00:00").getTime();
-        setInterval(() => {
-            const diff = new Date().getTime() - start;
-            document.getElementById("d").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("h").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("m").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("s").innerText = Math.floor((diff % (1000 * 60)) / 1000);
-        }, 1000);
+        function updateTimers() {
+            const now = new Date().getTime();
+            const t1 = now - new Date("September 10, 2025").getTime();
+            const t2 = now - new Date("March 13, 2026").getTime();
+
+            const calc = (diff, id) => {
+                document.getElementById('d'+id).innerText = Math.floor(diff / 86400000);
+                document.getElementById('h'+id).innerText = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById('m'+id).innerText = Math.floor((diff % 3600000) / 60000);
+                document.getElementById('s'+id).innerText = Math.floor((diff % 60000) / 1000);
+            };
+            calc(t1, '1'); calc(t2, '2');
+        }
+        setInterval(updateTimers, 1000);
     </script>
 </body>
 </html>
