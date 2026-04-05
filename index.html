@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary-color: #ff4d6d;
-            --bg-color: #0f0f0f;
+            --bg-color: #000000;
         }
 
         body {
@@ -15,14 +15,10 @@
             background-color: var(--bg-color);
             color: white;
             font-family: 'Cairo', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden; /* مقفول في البداية */
         }
 
-        /* شاشة البداية */
+        /* شاشة الوردة */
         #start-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,74 +30,67 @@
             cursor: pointer;
         }
 
-        .big-rose {
-            font-size: 120px;
-            animation: pulse 1.5s infinite;
-        }
+        .big-rose { font-size: 100px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* العناصر المخفية في البداية */
-        .step {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-            margin-bottom: 30px;
-        }
-
-        .show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #main-content {
-            display: none;
+        /* الأقسام (كل قسم واخد طول الشاشة) */
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             padding: 20px;
-            width: 100%;
+            box-sizing: border-box;
         }
 
+        #main-content { display: none; }
+
+        /* ستايل العداد الجديد (أبيض وكبير) */
+        .counter-val {
+            font-size: 60px;
+            font-weight: 900;
+            color: #ffffff;
+            display: block;
+            line-height: 1;
+        }
+        .counter-label {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        /* مطر الورد */
         .flower-rain {
             position: fixed;
             color: rgba(255, 77, 109, 0.4);
             font-size: 20px;
-            animation: fall 4s linear forwards;
+            animation: fall 5s linear forwards;
             z-index: -1;
         }
-
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
-
-        /* تنسيق العداد */
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 15px;
-        }
-
-        .time-box span {
-            display: block;
-            font-size: 22px;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
         .photo-gallery img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            margin: 5px;
+            width: 80%;
+            max-width: 300px;
+            border: 4px solid white;
+            border-radius: 15px;
+            margin: 10px;
         }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            animation: upDown 1.5s infinite;
+            font-size: 24px;
+        }
+        @keyframes upDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
@@ -111,46 +100,43 @@
     </div>
 
     <div id="main-content">
-        <h1 class="step" id="step1">كل ثانية وإنتي معايا ❤️</h1>
-        
-        <div class="step" id="step2">
+        <section>
+            <h1 style="color: var(--primary-color);">كل ثانية وإنتي معايا ❤️</h1>
             <p>إحنا مع بعض من 10/9/2025</p>
             <div class="timer-grid">
-                <div class="time-box"><span id="days">0</span>يوم</div>
-                <div class="time-box"><span id="hours">0</span>ساعة</div>
-                <div class="time-box"><span id="minutes">0</span>دقيقة</div>
-                <div class="time-box"><span id="seconds">0</span>ثانية</div>
+                <div class="time-box"><span class="counter-val" id="days">0</span><span class="counter-label">يوم</span></div>
+                <div class="time-box"><span class="counter-val" id="hours">0</span><span class="counter-label">ساعة</span></div>
+                <div class="time-box"><span class="counter-val" id="minutes">0</span><span class="counter-label">دقيقة</span></div>
+                <div class="time-box"><span class="counter-val" id="seconds">0</span><span class="counter-label">ثانية</span></div>
             </div>
-        </div>
+            <div class="scroll-hint">🔽 انزلي تحت</div>
+        </section>
 
-        <div class="step" id="step3">
+        <section>
             <div class="photo-gallery">
-                <img src="https://via.placeholder.com/150">
-                <img src="https://via.placeholder.com/150">
+                <img src="https://via.placeholder.com/300">
             </div>
-        </div>
+            <p style="font-size: 20px; max-width: 80%;">
+                حبيبتي.. كل سنة وإنتي منورة حياتي، إنتي الوردة اللي بجد في عمري.
+            </p>
+            <div class="scroll-hint">🔽 لسه فيه حاجة</div>
+        </section>
 
-        <h2 class="step" id="step4" style="color: var(--primary-color);">
-            كل سنة وإنتي طيبة.. وكل سنة وأنا معاكي
-        </h2>
+        <section>
+            <h2 style="font-size: 40px; color: var(--primary-color);">
+                كل سنة وإنتي طيبة..<br>وكل سنة وأنا معاكي ❤️
+            </h2>
+        </section>
     </div>
 
     <script>
         function startStory() {
-            // إخفاء الوردة
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
-            
+            document.body.style.overflowY = 'auto'; // فتح السكرول
             startFlowerRain();
-
-            // إظهار الخطوات بتوقيتات مختلفة
-            setTimeout(() => { document.getElementById('step1').classList.add('show'); }, 500);
-            setTimeout(() => { document.getElementById('step2').classList.add('show'); }, 2500);
-            setTimeout(() => { document.getElementById('step3').classList.add('show'); }, 4500);
-            setTimeout(() => { document.getElementById('step4').classList.add('show'); }, 6500);
         }
 
-        // كود العداد
         const startDate = new Date("September 10, 2025 00:00:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -161,7 +147,6 @@
             document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }, 1000);
 
-        // كود مطر الورد
         function startFlowerRain() {
             setInterval(() => {
                 const f = document.createElement('div');
@@ -169,7 +154,7 @@
                 f.innerHTML = '🌹';
                 f.style.left = Math.random() * 100 + 'vw';
                 document.body.appendChild(f);
-                setTimeout(() => f.remove(), 4000);
+                setTimeout(() => f.remove(), 5000);
             }, 300);
         }
     </script>
