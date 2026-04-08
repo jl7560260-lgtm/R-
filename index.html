@@ -117,10 +117,10 @@
         </section>
 
         <section>
-            <h2 style="color: var(--primary); margin-bottom: 20px;">فديو عملتهولك ي ملاكي ❤️ ❤️</h2>
-            <video width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary);" controls>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">حاجة بسيطة عشانك ❤️</h2>
+            <video id="myVideo" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary);" controls>
                 <source src="VID_20260325_180151.mp4" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو.. جربي تفتحيه من متصفح تاني.
+                متصفحك لا يدعم تشغيل الفيديو.
             </video>
             <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">أجمل ذكرى في حياتي ✨</p>
         </section>
@@ -157,6 +157,7 @@
         let isPlaying = false;
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
+        const myVideo = document.getElementById('myVideo');
 
         function toggleMusic() {
             if (isPlaying) {
@@ -178,6 +179,20 @@
                 isPlaying = true;
             }).catch(e => console.log("Music needs interaction"));
         }
+
+        // إيقاف الموسيقى تلقائياً عند تشغيل الفيديو
+        myVideo.addEventListener('play', function() {
+            bgMusic.pause();
+            isPlaying = false;
+            musicBtn.innerHTML = "🔇";
+        });
+
+        // تشغيل الموسيقى تلقائياً عند انتهاء الفيديو (اختياري)
+        myVideo.addEventListener('ended', function() {
+            bgMusic.play();
+            isPlaying = true;
+            musicBtn.innerHTML = "🎵";
+        });
 
         function openJar() {
             const random = messages[Math.floor(Math.random() * messages.length)];
@@ -237,4 +252,5 @@
         setInterval(updateTimers, 1000);
     </script>
 </body>
-</html>
+            </html>
+            
