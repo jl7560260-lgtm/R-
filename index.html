@@ -12,7 +12,6 @@
 
         section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
 
-        /* زرار التحكم في الموسيقى */
         #music-control {
             position: fixed; top: 20px; right: 20px; z-index: 4000;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);
@@ -22,17 +21,14 @@
             cursor: pointer; font-size: 20px; color: white; transition: 0.3s;
         }
 
-        /* شاشة البداية */
         #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 2000; cursor: pointer; }
         .big-rose { font-size: 100px; animation: pulse 2s infinite; }
 
-        /* العدادات */
         .timer-container { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
         .time-unit { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; min-width: 60px; border: 1px solid rgba(255, 77, 109, 0.2); }
         .time-unit span { display: block; font-size: 26px; font-weight: 900; color: #fff; }
         .time-unit label { font-size: 11px; color: var(--primary); }
 
-        /* الصندوق الإزاز */
         .glass-jar {
             width: 150px; height: 210px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px 15px 60px 60px;
@@ -40,7 +36,6 @@
         }
         .mini-paper { width: 25px; height: 15px; background: #fffbe6; border-radius: 2px; transform: rotate(var(--r)); opacity: 0.6; }
 
-        /* الورقة المطوية */
         #paper-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; width: 85%; max-width: 320px; }
         .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; border-radius: 2px; }
         @keyframes openNote { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -49,9 +44,12 @@
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2500; }
         
         .message-box { background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; border: 1px dashed var(--primary); width: 90%; max-width: 400px; }
-        textarea { width: 100%; height: 100px; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 10px; color: white; padding: 10px; font-family: 'Cairo'; resize: none; margin-bottom: 15px; }
-        .send-btn { background: #fff; color: #000; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #form-status { margin-top: 10px; font-size: 14px; color: var(--primary); display: none; }
+        textarea, input[type="text"] { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 10px; color: white; padding: 10px; font-family: 'Cairo'; box-sizing: border-box; }
+        .send-btn { background: #fff; color: #000; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        
+        /* تنسيق صور الهدية */
+        #secret-photo-container img { width: 100%; max-width: 300px; border-radius: 15px; margin-bottom: 15px; }
+        #protectedImg { border: 3px solid var(--primary); pointer-events: none; -webkit-touch-callout: none; user-select: none; }
 
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         .scroll-hint { font-size: 14px; color: #555; margin-top: 30px; animation: bounce 2s infinite; }
@@ -61,7 +59,6 @@
 <body>
 
     <audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
-    
     <div id="music-control" onclick="toggleMusic()">🎵</div>
 
     <div id="start-screen" onclick="startStory()">
@@ -105,24 +102,52 @@
         </section>
 
         <section>
+            <h2 style="color: var(--primary); margin-bottom: 20px;"> video for you ❤️</h2>
+            <video class="my-videos" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary);" controls>
+                <source src="VID_20260325_180151.mp4" type="video/mp4">
+            </video>
+        </section>
+
+        <section>
+            <h2 style="color: var(--primary); margin-bottom: 20px;"> Another special video ❤️</h2>
+            <video class="my-videos" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary);" controls>
+                <source src="lv_7370075076756098309_20260419220911.mp4" type="video/mp4">
+            </video>
+        </section>
+
+        <section id="quiz-section">
+            <div class="message-box">
+                <h3 style="color: var(--primary);">سؤال لملاكي ❤️</h3>
+                <p style="font-size: 14px;">مين عشقي وحياتي وعمري وبنتي وصاحبتي ودنينتي وسكرتي وحتت ال white chocolate بتاعتي؟</p>
+                <input type="text" id="answerInput" placeholder="اكتبي الإسم الدلع (أول حرف كابتن)...">
+                <button onclick="checkAnswer()" class="send-btn">فتح الهدية 🎁</button>
+            </div>
+
+            <div id="secret-photo-container" style="display:none; margin-top: 25px;">
+                <div>
+                    <p style="color: #fff; font-size: 14px;">دي تقدري تنزليها عادي يا روحي ❤️</p>
+                    <img src="IMG_20260324_160411.jpg" alt="First Gift">
+                </div>
+                
+                <hr style="border: 0; border-top: 1px dashed var(--primary); width: 60%; margin: 20px auto;">
+
+                <div>
+                    <p style="color: var(--primary); font-size: 14px;">(دي هتشوفيها مرة واحدة بس وممنوع تنزل 😉❤️)</p>
+                    <img id="protectedImg" src="IMG_20251220_092518.jpg" oncontextmenu="return false;">
+                </div>
+            </div>
+        </section>
+
+        <section>
             <div class="message-box">
                 <h3 style="color: var(--primary);">اكتبيلي حاجة في قلببيك ❤️</h3>
                 <form id="love-form" action="https://formspree.io/f/mbdpppnv" method="POST">
                     <textarea name="message" id="userMsg" placeholder="اكتبي أي حاجة هنا..." required></textarea>
                     <button type="submit" class="send-btn" id="submit-btn">إرسال لملاكي</button>
                 </form>
-                <div id="form-status">تم الإرسال لملاكك بنجاح ❤️</div>
+                <div id="form-status" style="display:none; margin-top: 10px; color: var(--primary);">تم الإرسال بنجاح ❤️</div>
             </div>
             <p style="margin-top: 50px; font-size: 12px; opacity: 0.4;">Made with Love for R ❤️</p>
-        </section>
-
-        <section>
-            <h2 style="color: var(--primary); margin-bottom: 20px;"> video for you  ❤️</h2>
-            <video id="myVideo" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary);" controls>
-                <source src="VID_20260325_180151.mp4" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو.
-            </video>
-            <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">بحبك 🌹❤️ ✨</p>
         </section>
     </div>
 
@@ -142,31 +167,21 @@
             { t: "بحبك ي ملاكي❤️", q: false },
             { t: "مفيش يوم مش مفكر فيكي ي قلبي ❤️", q: false },
             { t: "انتي أجمل حاجة حصلت في دنيتي والله ❤️", q: false },
-            { t: " وجودك جنبي هو كل ما اتمناه  ❤️", q: false },
+            { t: " وجودك جنبي هو كل ما اتمناه ❤️", q: false },
             { t: "ضحكتك دي هي اللي بتنور حياتي ❤️", q: false },
             { t: "مين ملاكي؟", q: true },
             { t: "مين عمري؟", q: true },
-            { t: "مين بموت فيه؟", q: true },
-            { t: "مين اكتر حد بحبه؟", q: true },
-            { t: "مين اتمنالو الرضا يرضا؟", q: true },
-            { t: "زي كل مره احيلك امش حب واشتكيلك همي ❤️❤️", q: true },
-            { t: "You are my forever and always.", q: false },
-            { t: "I'm so lucky to have you in my life.", q: false }
+            { t: "مين بموت فيه؟", q: true }
         ];
 
         let isPlaying = false;
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
-        const myVideo = document.getElementById('myVideo');
+        const allVideos = document.querySelectorAll('.my-videos');
 
         function toggleMusic() {
-            if (isPlaying) {
-                bgMusic.pause();
-                musicBtn.innerHTML = "🔇";
-            } else {
-                bgMusic.play();
-                musicBtn.innerHTML = "🎵";
-            }
+            if (isPlaying) { bgMusic.pause(); musicBtn.innerHTML = "🔇"; } 
+            else { bgMusic.play(); musicBtn.innerHTML = "🎵"; }
             isPlaying = !isPlaying;
         }
 
@@ -175,24 +190,35 @@
             document.getElementById('main-content').style.display = 'block';
             musicBtn.style.display = 'flex'; 
             document.body.style.overflowY = 'auto';
-            bgMusic.play().then(() => {
-                isPlaying = true;
-            }).catch(e => console.log("Music needs interaction"));
+            bgMusic.play().then(() => isPlaying = true).catch(e => console.log("Interaction needed"));
         }
 
-        // إيقاف الموسيقى تلقائياً عند تشغيل الفيديو
-        myVideo.addEventListener('play', function() {
-            bgMusic.pause();
-            isPlaying = false;
-            musicBtn.innerHTML = "🔇";
+        allVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                bgMusic.pause();
+                isPlaying = false;
+                musicBtn.innerHTML = "🔇";
+            });
         });
 
-        // تشغيل الموسيقى تلقائياً عند انتهاء الفيديو (اختياري)
-        myVideo.addEventListener('ended', function() {
-            bgMusic.play();
-            isPlaying = true;
-            musicBtn.innerHTML = "🎵";
-        });
+        // التحقق من الإجابة والمرة الواحدة
+        function checkAnswer() {
+            const answer = document.getElementById('answerInput').value.trim();
+            
+            if (localStorage.getItem('giftOpened') === 'true') {
+                alert("يا روحي الصور دي بتفتح مرة واحدة بس وانتي شوفتيها خلاص ❤️");
+                return;
+            }
+
+            if (answer === "Tota") {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('secret-photo-container').style.display = 'block';
+                document.getElementById('quiz-section').querySelector('.message-box').style.display = 'none';
+                localStorage.setItem('giftOpened', 'true'); 
+            } else {
+                alert("لااا ركزي.. الاسم لازم يكون زي اللي في الفيديو وبالظبط (أول حرف كابتن) ❤️");
+            }
+        }
 
         function openJar() {
             const random = messages[Math.floor(Math.random() * messages.length)];
@@ -200,41 +226,17 @@
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('paper-container').style.display = 'block';
             document.getElementById('replyBtn').style.display = random.q ? 'inline-block' : 'none';
-            document.getElementById('close-msg').style.display = random.q ? 'none' : 'block';
         }
-
-        function handleReply(e) {
-            e.stopPropagation();
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff', '#6a0dad'] });
-            document.getElementById('text').innerText = "صح يا ملاكي..أنتي كل حياتي ❤️";
-            document.getElementById('replyBtn').style.display = 'none';
-            document.getElementById('close-msg').style.display = 'block';
-            document.getElementById('note-heart').innerText = "💖";
-        }
-
-        const form = document.getElementById("love-form");
-        form.addEventListener("submit", async function(event) {
-            event.preventDefault();
-            const status = document.getElementById("form-status");
-            const btn = document.getElementById("submit-btn");
-            const data = new FormData(event.target);
-            btn.innerHTML = "جاري الإرسال...";
-            fetch(event.target.action, {
-                method: form.method, body: data, headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    status.style.display = "block";
-                    form.reset();
-                    btn.style.display = "none";
-                } else {
-                    alert("حصل مشكلة صغيرة، جربي تاني يا روحي");
-                }
-            }).catch(error => alert("تأكدي من الاتصال بالإنترنت"));
-        });
 
         function closeNote() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('paper-container').style.display = 'none';
+        }
+
+        function handleReply(e) {
+            e.stopPropagation();
+            document.getElementById('text').innerText = "صح يا ملاكي..أنتي كل حياتي ❤️";
+            document.getElementById('replyBtn').style.display = 'none';
         }
 
         function updateTimers() {
@@ -252,5 +254,4 @@
         setInterval(updateTimers, 1000);
     </script>
 </body>
-            </html>
-            
+</html>
