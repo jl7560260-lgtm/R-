@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root { --primary: #ff4d6d; --bg: #000; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; scroll-behavior: smooth; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; scroll-behavior: smooth; user-select: none; -webkit-user-select: none; }
 
         section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
 
@@ -47,16 +47,15 @@
         textarea, input[type="text"] { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 10px; color: white; padding: 10px; font-family: 'Cairo'; box-sizing: border-box; }
         .send-btn { background: #fff; color: #000; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         
-        /* تنسيق صور الهدية */
-        #secret-photo-container img { width: 100%; max-width: 300px; border-radius: 15px; margin-bottom: 15px; }
-        #protectedImg { border: 3px solid var(--primary); pointer-events: none; -webkit-touch-callout: none; user-select: none; }
+        #secret-photo-container img { width: 100%; max-width: 300px; border-radius: 15px; margin-bottom: 10px; }
+        #protectedImg { filter: blur(25px); transition: filter 0.1s ease; border: 3px solid var(--primary); pointer-events: none; -webkit-touch-callout: none; }
 
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         .scroll-hint { font-size: 14px; color: #555; margin-top: 30px; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
     <div id="music-control" onclick="toggleMusic()">🎵</div>
@@ -98,7 +97,6 @@
                 <div class="mini-paper" style="--r: 10deg"></div><div class="mini-paper" style="--r: -15deg"></div>
                 <div class="mini-paper" style="--r: 25deg"></div><div class="mini-paper" style="--r: 5deg"></div>
             </div>
-            <p style="margin-top: 20px; opacity: 0.7;"> دوسي على الصندوق عشان تشوفي رسايلي ليكي</p>
         </section>
 
         <section>
@@ -119,21 +117,21 @@
             <div class="message-box">
                 <h3 style="color: var(--primary);">سؤال لملاكي ❤️</h3>
                 <p style="font-size: 14px;">مين عشقي وحياتي وعمري وبنتي وصاحبتي ودنينتي وسكرتي وحتت ال white chocolate بتاعتي؟</p>
-                <input type="text" id="answerInput" placeholder="اكتبي الإسم الدلع (أول حرف كابتن)...">
+                <input type="text" id="answerInput" placeholder="اكتبي الإسم (أول حرف كابتن)...">
                 <button onclick="checkAnswer()" class="send-btn">فتح الهدية 🎁</button>
             </div>
 
             <div id="secret-photo-container" style="display:none; margin-top: 25px;">
                 <div>
-                    <p style="color: #fff; font-size: 14px;">دي تقدري تنزليها عادي يا روحي ❤️</p>
-                    <img src="IMG_20260324_160411.jpg" alt="First Gift">
+                    <p style="color: #fff; font-size: 13px;">دي تقدري تنزليها عادي ❤️</p>
+                    <img src="IMG_20260324_160411.jpg">
                 </div>
                 
                 <hr style="border: 0; border-top: 1px dashed var(--primary); width: 60%; margin: 20px auto;">
 
-                <div>
-                    <p style="color: var(--primary); font-size: 14px;">(دي هتشوفيها مرة واحدة بس وممنوع تنزل 😉❤️)</p>
-                    <img id="protectedImg" src="IMG_20251220_092518.jpg" oncontextmenu="return false;">
+                <div id="protection-zone">
+                    <p style="color: var(--primary); font-size: 13px; font-weight: bold;">(دي هتشوفيها مرة واحدة.. خليكي دايسة بصباعك عشان تظهر 😉❤️)</p>
+                    <img id="protectedImg" src="IMG_20251220_092518.jpg">
                 </div>
             </div>
         </section>
@@ -166,18 +164,14 @@
             { t: "عمري ماهبطل افكر فيكي يملاكي ❤️", q: false },
             { t: "بحبك ي ملاكي❤️", q: false },
             { t: "مفيش يوم مش مفكر فيكي ي قلبي ❤️", q: false },
-            { t: "انتي أجمل حاجة حصلت في دنيتي والله ❤️", q: false },
-            { t: " وجودك جنبي هو كل ما اتمناه ❤️", q: false },
-            { t: "ضحكتك دي هي اللي بتنور حياتي ❤️", q: false },
-            { t: "مين ملاكي؟", q: true },
-            { t: "مين عمري؟", q: true },
-            { t: "مين بموت فيه؟", q: true }
+            { t: "انتي أجمل حاجة حصلت في دنيتي والله ❤️", q: false }
         ];
 
         let isPlaying = false;
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
         const allVideos = document.querySelectorAll('.my-videos');
+        const protectedImg = document.getElementById('protectedImg');
 
         function toggleMusic() {
             if (isPlaying) { bgMusic.pause(); musicBtn.innerHTML = "🔇"; } 
@@ -190,35 +184,33 @@
             document.getElementById('main-content').style.display = 'block';
             musicBtn.style.display = 'flex'; 
             document.body.style.overflowY = 'auto';
-            bgMusic.play().then(() => isPlaying = true).catch(e => console.log("Interaction needed"));
+            bgMusic.play().then(() => isPlaying = true).catch(e => console.log("Start Music"));
         }
 
-        allVideos.forEach(video => {
-            video.addEventListener('play', () => {
-                bgMusic.pause();
-                isPlaying = false;
-                musicBtn.innerHTML = "🔇";
-            });
-        });
+        allVideos.forEach(v => v.addEventListener('play', () => { bgMusic.pause(); isPlaying = false; musicBtn.innerHTML = "🔇"; }));
 
-        // التحقق من الإجابة والمرة الواحدة
         function checkAnswer() {
-            const answer = document.getElementById('answerInput').value.trim();
-            
+            const ans = document.getElementById('answerInput').value.trim();
             if (localStorage.getItem('giftOpened') === 'true') {
-                alert("يا روحي الصور دي بتفتح مرة واحدة بس وانتي شوفتيها خلاص ❤️");
+                alert("الهدية دي كانت بتفتح مرة واحدة بس يا روحي ❤️");
                 return;
             }
-
-            if (answer === "Tota") {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            if (ans === "Tota") {
+                confetti({ particleCount: 150, spread: 70 });
                 document.getElementById('secret-photo-container').style.display = 'block';
                 document.getElementById('quiz-section').querySelector('.message-box').style.display = 'none';
-                localStorage.setItem('giftOpened', 'true'); 
-            } else {
-                alert("لااا ركزي.. الاسم لازم يكون زي اللي في الفيديو وبالظبط (أول حرف كابتن) ❤️");
-            }
+                localStorage.setItem('giftOpened', 'true');
+            } else { alert("لا ركزي.. الإسم لازم يكون زي الفيديو (أول حرف كابتن) ❤️"); }
         }
+
+        // منطق حماية السكرين شوت (Blur)
+        const showImg = () => { if(localStorage.getItem('giftOpened') === 'true') protectedImg.style.filter = "blur(0px)"; };
+        const hideImg = () => { protectedImg.style.filter = "blur(25px)"; };
+
+        document.addEventListener('touchstart', showImg);
+        document.addEventListener('touchend', hideImg);
+        document.addEventListener('mousedown', showImg);
+        document.addEventListener('mouseup', hideImg);
 
         function openJar() {
             const random = messages[Math.floor(Math.random() * messages.length)];
@@ -228,16 +220,8 @@
             document.getElementById('replyBtn').style.display = random.q ? 'inline-block' : 'none';
         }
 
-        function closeNote() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('paper-container').style.display = 'none';
-        }
-
-        function handleReply(e) {
-            e.stopPropagation();
-            document.getElementById('text').innerText = "صح يا ملاكي..أنتي كل حياتي ❤️";
-            document.getElementById('replyBtn').style.display = 'none';
-        }
+        function closeNote() { document.getElementById('overlay').style.display = 'none'; document.getElementById('paper-container').style.display = 'none'; }
+        function handleReply(e) { e.stopPropagation(); document.getElementById('text').innerText = "صح يا ملاكي..أنتي كل حياتي ❤️"; document.getElementById('replyBtn').style.display = 'none'; }
 
         function updateTimers() {
             const now = new Date().getTime();
