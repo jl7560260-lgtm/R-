@@ -9,50 +9,27 @@
     <style>
         :root { --primary: #ff4d6d; --bg: #000; }
         body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow-x: hidden; text-align: center; scroll-behavior: smooth; user-select: none; -webkit-user-select: none; }
-
         section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-
-        #music-control {
-            position: fixed; top: 20px; right: 20px; z-index: 4000;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);
-            border: 1px solid var(--primary); border-radius: 50%;
-            width: 45px; height: 45px; display: none; 
-            justify-content: center; align-items: center;
-            cursor: pointer; font-size: 20px; color: white; transition: 0.3s;
-        }
-
+        #music-control { position: fixed; top: 20px; right: 20px; z-index: 4000; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border: 1px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; display: none; justify-content: center; align-items: center; cursor: pointer; font-size: 20px; color: white; transition: 0.3s; }
         #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 2000; cursor: pointer; }
         .big-rose { font-size: 100px; animation: pulse 2s infinite; }
-
         .timer-container { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
         .time-unit { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; min-width: 60px; border: 1px solid rgba(255, 77, 109, 0.2); }
         .time-unit span { display: block; font-size: 26px; font-weight: 900; color: #fff; }
         .time-unit label { font-size: 11px; color: var(--primary); }
-
-        .glass-jar {
-            width: 150px; height: 210px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px 15px 60px 60px;
-            position: relative; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 5px; padding: 10px;
-        }
+        .glass-jar { width: 150px; height: 210px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px 15px 60px 60px; position: relative; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 5px; padding: 10px; }
         .mini-paper { width: 25px; height: 15px; background: #fffbe6; border-radius: 2px; transform: rotate(var(--r)); opacity: 0.6; }
-
         #paper-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; width: 85%; max-width: 320px; }
-        .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; border-radius: 2px; }
-        @keyframes openNote { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
+        .folded-paper { background: #fffbe6; color: #333; padding: 35px 20px; box-shadow: 0 20px 50px #000; animation: openNote 0.5s ease-out forwards; font-family: 'Reenie Beanie', cursive; font-size: 28px; border-radius: 2px; text-align: center; }
         .reply-btn { margin-top: 15px; background: var(--primary); color: white; border: none; padding: 8px 25px; border-radius: 20px; font-family: 'Cairo'; cursor: pointer; display: none; }
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2500; }
-        
         .message-box { background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; border: 1px dashed var(--primary); width: 90%; max-width: 400px; }
         textarea, input[type="text"] { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 10px; color: white; padding: 10px; font-family: 'Cairo'; box-sizing: border-box; }
         .send-btn { background: #fff; color: #000; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        
         #secret-photo-container img { width: 100%; max-width: 300px; border-radius: 15px; margin-bottom: 10px; }
-        #protectedImg { filter: blur(25px); transition: filter 0.1s ease; border: 3px solid var(--primary); pointer-events: none; -webkit-touch-callout: none; }
-
+        #protectedImg { filter: blur(25px); transition: filter 0.1s ease; border: 3px solid var(--primary); pointer-events: none; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        .scroll-hint { font-size: 14px; color: #555; margin-top: 30px; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
+        @keyframes openNote { from { transform: scaleX(0); } to { transform: scaleX(1); } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -62,17 +39,17 @@
 
     <div id="start-screen" onclick="startStory()">
         <div class="big-rose">🌹</div>
-        <p style="position:absolute; bottom:25%; font-size:14px; opacity:0.5;">دوسي علي الورده وشوف الهديتك ي قمري ❤️🌹</p>
+        <p style="position:absolute; bottom:25%; font-size:14px; opacity:0.5;">دوسي علي الورده وشوفي الهدية يا قمري ❤️🌹</p>
     </div>
 
     <div id="main-content" style="display:none;">
         <section>
-            <h1 style="font-size: 35px; color: var(--primary);">كل سنه وانت طيبه ي ملاكي ❤️</h1>
-            <div class="scroll-hint">انزلي تحت يقمري 👇</div>
+            <h1 style="font-size: 35px; color: var(--primary);">كل سنه وانت طيبه يا ملاكي ❤️</h1>
+            <p>انزلي تحت وشوفي المفاجآت 👇</p>
         </section>
 
         <section>
-            <h2 style="color: #fff;"> لينا كام يوم ي ملاكي من أول مرة اتكلمنا فيها ❤️</h2>
+            <h2>فات كام يوم من أول مرة اتكلمنا؟ ❤️</h2>
             <div class="timer-container">
                 <div class="time-unit"><span id="d1">0</span><label>يوم</label></div>
                 <div class="time-unit"><span id="h1">0</span><label>ساعة</label></div>
@@ -82,7 +59,7 @@
         </section>
 
         <section>
-            <h2 style="color: var(--primary);"> لينا كام يوم من سعت أول مرة أقولك بحبك ❤️</h2>
+            <h2 style="color: var(--primary);">فات كام يوم من أول مرة قولتلك بحبك؟ ❤️</h2>
             <div class="timer-container">
                 <div class="time-unit"><span id="d2">0</span><label>يوم</label></div>
                 <div class="time-unit"><span id="h2">0</span><label>ساعة</label></div>
@@ -92,32 +69,20 @@
         </section>
 
         <section>
-            <h2 style="margin-bottom: 30px;">Memory Jar 🍯</h2>
+            <h2 style="margin-bottom: 30px;">Memory Jar 🍯❤️</h2>
             <div class="glass-jar" onclick="openJar()">
-                <div class="mini-paper" style="--r: 10deg"></div><div class="mini-paper" style="--r: -15deg"></div>
-                <div class="mini-paper" style="--r: 25deg"></div><div class="mini-paper" style="--r: 5deg"></div>
+                <div class="mini-paper" style="--r: 10deg"></div>
+                <div class="mini-paper" style="--r: -15deg"></div>
+                <div class="mini-paper" style="--r: 25deg"></div>
             </div>
-        </section>
-
-        <section>
-            <h2 style="color: var(--primary); margin-bottom: 20px;"> video for you ❤️</h2>
-            <video class="my-videos" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary);" controls>
-                <source src="VID_20260325_180151.mp4" type="video/mp4">
-            </video>
-        </section>
-
-        <section>
-            <h2 style="color: var(--primary); margin-bottom: 20px;"> Another special video ❤️</h2>
-            <video class="my-videos" width="90%" style="max-width: 400px; border-radius: 20px; border: 2px solid var(--primary);" controls>
-                <source src="lv_7370075076756098309_20260419220911.mp4" type="video/mp4">
-            </video>
+            <p style="margin-top: 20px; opacity: 0.7;">دوسي على الصندوق وشوفي رسايلي</p>
         </section>
 
         <section id="quiz-section">
             <div class="message-box">
                 <h3 style="color: var(--primary);">سؤال لملاكي ❤️</h3>
                 <p style="font-size: 14px;">مين عشقي وحياتي وعمري وبنتي وصاحبتي ودنينتي وسكرتي وحتت ال white chocolate بتاعتي؟</p>
-                <input type="text" id="answerInput" placeholder="اكتبي الإسم (أول حرف كابتن)...">
+                <input type="text" id="answerInput" placeholder="اكتبي الإسم هنا...">
                 <button onclick="checkAnswer()" class="send-btn">فتح الهدية 🎁</button>
             </div>
 
@@ -126,11 +91,9 @@
                     <p style="color: #fff; font-size: 13px;">دي تقدري تنزليها عادي ❤️</p>
                     <img src="IMG_20260324_160411.jpg">
                 </div>
-                
                 <hr style="border: 0; border-top: 1px dashed var(--primary); width: 60%; margin: 20px auto;">
-
                 <div id="protection-zone">
-                    <p style="color: var(--primary); font-size: 13px; font-weight: bold;">(دي هتشوفيها مرة واحدة.. خليكي دايسة بصباعك عشان تظهر 😉❤️)</p>
+                    <p style="color: var(--primary); font-size: 13px; font-weight: bold;">(خليكي دايسة بصباعك عشان تظهر 😉❤️)</p>
                     <img id="protectedImg" src="IMG_20251220_092518.jpg">
                 </div>
             </div>
@@ -138,12 +101,11 @@
 
         <section>
             <div class="message-box">
-                <h3 style="color: var(--primary);">اكتبيلي حاجة في قلببيك ❤️</h3>
+                <h3 style="color: var(--primary);">اكتبيلي حاجة في قلبك ❤️</h3>
                 <form id="love-form" action="https://formspree.io/f/mbdpppnv" method="POST">
                     <textarea name="message" id="userMsg" placeholder="اكتبي أي حاجة هنا..." required></textarea>
-                    <button type="submit" class="send-btn" id="submit-btn">إرسال لملاكي</button>
+                    <button type="submit" class="send-btn">إرسال لملاكي</button>
                 </form>
-                <div id="form-status" style="display:none; margin-top: 10px; color: var(--primary);">تم الإرسال بنجاح ❤️</div>
             </div>
             <p style="margin-top: 50px; font-size: 12px; opacity: 0.4;">Made with Love for R ❤️</p>
         </section>
@@ -152,25 +114,35 @@
     <div id="overlay" onclick="closeNote()"></div>
     <div id="paper-container">
         <div class="folded-paper">
-            <div id="note-heart" style="color: #6a0dad; font-size: 35px;">💜</div>
             <div id="text"></div>
             <button class="reply-btn" id="replyBtn" onclick="handleReply(event)">أنا</button>
-            <p id="close-msg" style="font-family: 'Cairo'; font-size: 11px; color: #999; margin-top: 15px;">(دوسي في أي مكان للقفل)</p>
         </div>
     </div>
 
     <script>
         const messages = [
-            { t: "عمري ماهبطل افكر فيكي يملاكي ❤️", q: false },
-            { t: "بحبك ي ملاكي❤️", q: false },
-            { t: "مفيش يوم مش مفكر فيكي ي قلبي ❤️", q: false },
-            { t: "انتي أجمل حاجة حصلت في دنيتي والله ❤️", q: false }
+            { t: "مين سكرتي؟ 🍬", q: true, c: "سكرتي" },
+            { t: "مين بنت العسوله؟ 🍯", q: true, c: "بنت العسوله" },
+            { t: "مين بنت القموره؟ ✨", q: true, c: "بنت القموره" },
+            { t: "مين قمري؟ 🌕", q: true, c: "قمري" },
+            { t: "مين ملاكي؟ 😇❤️", q: true, c: "ملاكي" },
+            { t: "مين حب عمري؟ 🥰", q: true, c: "حب عمري" },
+            { t: "مين حياتي؟ ❤️", q: true, c: "حياتي" },
+            { t: "مين عشقي؟ 🔥❤️", q: true, c: "عشقي" },
+            { t: "مين نن قلبي؟ 👀❤️", q: true, c: "نن قلبي" },
+            { t: "مين بحبه؟ 💖", q: true, c: "اللي بحبه" },
+            { t: "مين عاوز ابوسه؟ 💋😘", q: true, c: "اللي عاوز ابوسه" },
+            { t: "MAYBE I AM NOT THE BEST PERSON IN YOUR LIFE.\nBUT I LOVE YOU WITH ALL MY HEART.", q: false },
+            { t: "Everything is better with you.\nEverything has been better since you.", q: false },
+            { t: "I NEVER WANT TO LOSE YOU, BECAUSE MY LIFE HAS BEEN SO MUCH BETTER SINCE THE DAY I MET YOU.", q: false },
+            { t: "You are my Baby...\nYou are my Heart beat.\nYou are my love.", q: false },
+            { t: "بحبك وبعشقك لأخر نفس فيا ❤️", q: false }
         ];
 
         let isPlaying = false;
+        let currentMsg = null;
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
-        const allVideos = document.querySelectorAll('.my-videos');
         const protectedImg = document.getElementById('protectedImg');
 
         function toggleMusic() {
@@ -184,15 +156,13 @@
             document.getElementById('main-content').style.display = 'block';
             musicBtn.style.display = 'flex'; 
             document.body.style.overflowY = 'auto';
-            bgMusic.play().then(() => isPlaying = true).catch(e => console.log("Start Music"));
+            bgMusic.play().then(() => isPlaying = true).catch(e => console.log("Play blocked"));
         }
-
-        allVideos.forEach(v => v.addEventListener('play', () => { bgMusic.pause(); isPlaying = false; musicBtn.innerHTML = "🔇"; }));
 
         function checkAnswer() {
             const ans = document.getElementById('answerInput').value.trim();
             if (localStorage.getItem('giftOpened') === 'true') {
-                alert("الهدية دي كانت بتفتح مرة واحدة بس يا روحي ❤️");
+                alert("الهدية دي بتفتح مرة واحدة بس يا روحي وشوفتيها خلاص ❤️");
                 return;
             }
             if (ans === "Tota") {
@@ -200,28 +170,33 @@
                 document.getElementById('secret-photo-container').style.display = 'block';
                 document.getElementById('quiz-section').querySelector('.message-box').style.display = 'none';
                 localStorage.setItem('giftOpened', 'true');
-            } else { alert("لا ركزي.. الإسم لازم يكون زي الفيديو (اول حرف كبير وي T كدا) ❤️"); }
+            } else { 
+                // التعديل المطلوب هنا في سطر 203
+                alert("لا ركزي.. الإسم لازم يكون زي الفيديو اول حرف كبير زي T كدا ❤️"); 
+            }
         }
 
-        // منطق حماية السكرين شوت (Blur)
-        const showImg = () => { if(localStorage.getItem('giftOpened') === 'true') protectedImg.style.filter = "blur(0px)"; };
-        const hideImg = () => { protectedImg.style.filter = "blur(25px)"; };
-
-        document.addEventListener('touchstart', showImg);
-        document.addEventListener('touchend', hideImg);
-        document.addEventListener('mousedown', showImg);
-        document.addEventListener('mouseup', hideImg);
-
         function openJar() {
-            const random = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('text').innerText = random.t;
+            currentMsg = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('text').innerText = currentMsg.t;
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('paper-container').style.display = 'block';
-            document.getElementById('replyBtn').style.display = random.q ? 'inline-block' : 'none';
+            document.getElementById('replyBtn').style.display = currentMsg.q ? 'inline-block' : 'none';
         }
 
         function closeNote() { document.getElementById('overlay').style.display = 'none'; document.getElementById('paper-container').style.display = 'none'; }
-        function handleReply(e) { e.stopPropagation(); document.getElementById('text').innerText = "صح يا ملاكي..أنتي كل حياتي ❤️"; document.getElementById('replyBtn').style.display = 'none'; }
+
+        function handleReply(e) {
+            e.stopPropagation();
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.7 } });
+            document.getElementById('text').innerHTML = `ص يا ملاكي.. أنتي <span style="color:var(--primary)">${currentMsg.c}</span> + بحبك وبعشقك ❤️`;
+            document.getElementById('replyBtn').style.display = 'none';
+        }
+
+        const showImg = () => { if(localStorage.getItem('giftOpened') === 'true') protectedImg.style.filter = "blur(0px)"; };
+        const hideImg = () => { protectedImg.style.filter = "blur(25px)"; };
+        document.addEventListener('touchstart', showImg); document.addEventListener('touchend', hideImg);
+        document.addEventListener('mousedown', showImg); document.addEventListener('mouseup', hideImg);
 
         function updateTimers() {
             const now = new Date().getTime();
